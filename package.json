@@ -1,0 +1,20 @@
+{
+  "name": "cse340",
+  "version": "1.0.0",
+  "description": "Back End Development",
+  "license": "ISC",
+  "author": "Ayobami Akinbiyi",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon",
+    "start": "npm run dev"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
