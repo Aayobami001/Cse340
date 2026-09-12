@@ -4,7 +4,7 @@ const path = require("path");
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
 // Define the port number the server will listen on
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 
@@ -38,7 +38,7 @@ app.get('/categories', async (req, res) => {
     res.render('categories', { title });
 });
 
-app.listen(port, () => {
-  console.log(`Server is running at localhost:${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running at http://127.0.0.1:${PORT}`);
   console.log(`Environment: ${NODE_ENV}`);
 });
