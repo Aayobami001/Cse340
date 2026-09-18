@@ -4,7 +4,7 @@
   "description": "Back End Development",
   "license": "ISC",
   "author": "Ayobami Akinbiyi",
-  "type": "commonjs",
+  "type": "module",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,8 +12,10 @@
     "start": "npm run dev"
   },
   "dependencies": {
+    "dotenv": "^17.4.2",
     "ejs": "^6.0.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "pg": "^8.23.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
