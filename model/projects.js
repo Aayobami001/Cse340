@@ -1,7 +1,7 @@
 import db from './db.js'
 import 'dotenv/config.js'
 
-const getAllprojects = async() => {
+const getAllProjects = async() => {
     const query = `
         SELECT service_project_id, title, description, location, date_begin
       FROM public.service_project;
@@ -12,4 +12,4 @@ const getAllprojects = async() => {
     return result.rows;
 }
 
-export {getAllprojects}  
+export { getAllProjects}  
