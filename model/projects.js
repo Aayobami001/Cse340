@@ -1,35 +1,83 @@
-import db from './db.js'
-import 'dotenv/config.js'
+import db from "./db.js";
+import "dotenv/config.js";
 
-const getAllProjects = async() => {
-    const query = `
+const getAllProjects = async (number_of_projects) => {
+  const query = `
         SELECT service_project_id, title, description, location, date_begin
-      FROM public.service_project;
+      FROM public.service_project
+      LIMIT $1;
     `;
 
-    const result = await db.query(query);
+  const result = await db.query(query, [number_of_projects]);
 
-    return result.rows;
-}
+  return result.rows;
+};
+
+const getUpcomingProjects = async (number_of_projects) => {
+  const query = `
+    SELECT
+      service_project.service_project_id,
+      service_project.title,
+      service_project.description,
+      service_project.location,
+      service_project.date_begin,
+      service_project.organization_id,
+      organization.name
+    FROM public.service_project
+    JOIN public.organization 
+      ON service_project.organization_id = organization.organization_id
+    WHERE service_project.date_begin >= CURRENT_DATE
+    LIMIT $1;
+  `;
+
+  const result = await db.query(query, [number_of_projects]);
+
+  return result.rows;
+};
+
+const getProjectDetails = async (projectId) => {
+  const query = `
+        SELECT
+          service_project.service_project_id,
+          service_project.title,
+          service_project.description,
+          service_project.date_begin,
+          service_project.location,
+          service_project.organization_id,
+          organization.name AS organization_name
+        FROM public.service_project
+        INNER JOIN public.organization
+          ON organization.organization_id = service_project.organization_id
+        WHERE service_project.service_project_id = $1;
+    `;
+
+  const result = await db.query(query, [projectId]);
+
+  return result.rows.length > 0 ? result.rows[0] : null;
+};
 
 const getProjectsByOrganizationId = async (organizationId) => {
-      const query = `
+  const query = `
         SELECT
-          project_id,
-          organization_id,
+          service_project_id,
           title,
           description,
           location,
-          date
-        FROM project
+          date_begin
+        FROM public.service_project
         WHERE organization_id = $1
-        ORDER BY date;
+        ORDER BY date_begin;
       `;
-      
-      const queryParams = [organizationId];
-      const result = await db.query(query, queryParams);
 
-      return result.rows;
+  const queryParams = [organizationId];
+  const result = await db.query(query, queryParams);
+
+  return result.rows;
 };
 
-export { getAllProjects, getProjectsByOrganizationId };  
+export {
+  getAllProjects,
+  getProjectDetails,
+  getProjectsByOrganizationId,
+  getUpcomingProjects,
+};
