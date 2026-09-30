@@ -47,10 +47,10 @@ const getUpcomingProjects = async (number_of_projects) => {
 const getProjectDetails = async (projectId) => {
   const query = `
         SELECT
-          service_project.service_project_id,
+          service_project.service_project_id AS project_id,
           service_project.title,
           service_project.description,
-          service_project.date_begin,
+          service_project.date_begin AS date,
           service_project.location,
           service_project.organization_id,
           organization.name AS organization_name
@@ -62,7 +62,22 @@ const getProjectDetails = async (projectId) => {
 
   const result = await db.query(query, [projectId]);
 
-  return result.rows.length > 0 ? result.rows[0] : null;
+  if (result.rows.length === 0) {
+    return null;
+  }
+
+  const categoriesQuery = `
+    SELECT category.category_id, category.name
+    FROM public.category
+    INNER JOIN public.service_project_category
+      ON category.category_id = service_project_category.category_id
+    WHERE service_project_category.service_project_id = $1
+    ORDER BY category.name;
+  `;
+
+  const categoriesResult = await db.query(categoriesQuery, [projectId]);
+
+  return { ...result.rows[0], categories: categoriesResult.rows };
 };
 
 const getProjectsByOrganizationId = async (organizationId) => {
