@@ -1,9 +1,8 @@
-import { getProjectDetails, getAllProjects, getUpcomingProjects } from "../model/projects.js";
+import { getProjectDetails, getAllProjects } from "../model/projects.js";
 
 const showProjectsPage = async (req, res) => {
-  const projects = await getAllProjects(5); // Fetch 10 projects
-  // const projects = await getUpcomingProjects(10); // Fetch 5 upcoming projects
-  const title = "Upcoming Service Projects";
+  const projects = await getAllProjects();
+  const title = "Service Projects";
   res.render("projects", { title, projects });
 };
 

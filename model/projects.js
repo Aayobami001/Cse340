@@ -1,14 +1,23 @@
 import db from "./db.js";
 import "dotenv/config.js";
 
-const getAllProjects = async (number_of_projects) => {
+const getAllProjects = async () => {
   const query = `
-        SELECT service_project_id, title, description, location, date_begin
-      FROM public.service_project
-      LIMIT $1;
+        SELECT
+          service_project.service_project_id,
+          service_project.title,
+          service_project.description,
+          service_project.location,
+          service_project.date_begin,
+          service_project.organization_id,
+          organization.name AS organization_name
+        FROM public.service_project
+        LEFT JOIN public.organization
+          ON organization.organization_id = service_project.organization_id
+        ORDER BY service_project.date_begin ASC;
     `;
 
-  const result = await db.query(query, [number_of_projects]);
+  const result = await db.query(query);
 
   return result.rows;
 };

@@ -1,10 +1,11 @@
 import db from './db.js'
 import 'dotenv/config.js'
 
-const getAllCategories = async() => {
+const getAllCategories = async () => {
     const query = `
-        SELECT organization_id, name, description, contact_email, logo_filename
-      FROM public.organization;
+        SELECT category_id, name
+        FROM public.category
+        ORDER BY name;
     `;
 
     const result = await db.query(query);
@@ -12,4 +13,16 @@ const getAllCategories = async() => {
     return result.rows;
 }
 
-export {getAllCategories}  
+  const getCategoryDetails = async (categoryId) => {
+    const query = `
+      SELECT category_id, name
+      FROM public.category
+      WHERE category_id = $1;
+    `;
+
+    const result = await db.query(query, [categoryId]);
+
+    return result.rows.length > 0 ? result.rows[0] : null;
+  };
+
+  export { getAllCategories, getCategoryDetails };
