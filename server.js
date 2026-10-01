@@ -6,9 +6,15 @@ import "dotenv/config";
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+// WEEK 04: Import express-session for session management
+import session from 'express-session';
+import flash from './middleware.js'; // Import the flash message middleware
+
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 // Define the application environment
 const NODE_ENV = process.env.NODE_ENV?.toLowerCase() || "production";
@@ -27,6 +33,19 @@ app.use(express.static(path.join(__dirname, "public")));
 // week 3: Added middleware to log all incoming requests and make NODE_ENV available to templates
 // Middleware to log all incoming requests
 
+// week04: Set up session management
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
+}));
+// Use flash message middleware
+app.use(flash);
+
+// Week 4: Express middleware to parse form data from request bodies
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // For handling JSON data from API requests
 app.use((req, res, next) => {
   if (NODE_ENV === "development") {
     console.log(`${req.method} ${req.url}`);
