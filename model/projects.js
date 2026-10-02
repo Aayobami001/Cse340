@@ -99,9 +99,30 @@ const getProjectsByOrganizationId = async (organizationId) => {
   return result.rows;
 };
 
+// Week 04: Function to create a new project in the database 
+const createProject = async (title, description, location, date_begin, organizationId) => {
+  const query = `
+    INSERT INTO service_project (title, description, location, date_begin, organization_id)
+    VALUES ($1, $2, $3, $4, $5)
+    RETURNING service_project_id;
+  `;
+  const queryParams = [title, description, location, date_begin, organizationId];
+  const result = await db.query(query, queryParams);
+
+  if (result.rows.length === 0) {
+    throw new Error("Failed to create project");
+  }             
+  if (process.env.ENABLE_SQL_LOGGING === "true") {
+    console.log("Created new project with ID:", result.rows[0].service_project_id);
+  }
+
+  return result.rows[0].service_project_id;
+};
+
 export {
   getAllProjects,
   getProjectDetails,
   getProjectsByOrganizationId,
   getUpcomingProjects,
+  createProject,
 };

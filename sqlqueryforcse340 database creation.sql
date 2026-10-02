@@ -26,11 +26,9 @@ CREATE TABLE service_project (
 	FOREIGN KEY (organization_id) REFERENCES organization(organization_id)
 );
 
-INSERT INTO service_project (title, description, location, date_begins)
+INSERT INTO service_project (title, description, location, date_begin)
 VALUES
-('Not Known Yet', 're through sustainable construction projects.', 'info@brightfuturebuilders.org', 'brightfuture-logo.png'),
-('GreenHarvest Growers', 'An urban farming collective promoting food sustainability and education in local neighborhoods.', 'contact@greenharvest.org', 'greenharvest-logo.png'),
-('UnityServe Volunteers', 'A volunteer coordination group supporting local charities and service initiatives.', 'hello@unityserve.org', 'unityserve-logo.png');
+('Not Known Yet', 're through sustainable construction projects.', 'Nigeria', '2/12/2026', 3)
 
 CREATE TABLE category (
     category_id SERIAL PRIMARY KEY,
