@@ -119,10 +119,35 @@ const createProject = async (title, description, location, date_begin, organizat
   return result.rows[0].service_project_id;
 };
 
+// Week 04: Function to update an existing project in the database
+const updateProject = async (projectId, title, description, location, dateBegin, organizationId) => {
+  const query = `
+    UPDATE public.service_project
+    SET title = $1,
+        description = $2,
+        location = $3,
+        date_begin = $4,
+        organization_id = $5
+    WHERE service_project_id = $6
+    RETURNING service_project_id;
+  `;
+  const result = await db.query(query, [
+    title,
+    description,
+    location,
+    dateBegin,
+    organizationId,
+    projectId,
+  ]);
+
+  return result.rows.length > 0;
+};
+
 export {
   getAllProjects,
   getProjectDetails,
   getProjectsByOrganizationId,
   getUpcomingProjects,
   createProject,
+  updateProject,
 };

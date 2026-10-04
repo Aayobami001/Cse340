@@ -2,6 +2,7 @@ import {
   getProjectDetails,
   getAllProjects,
   createProject,
+  updateProject,
 } from "../model/projects.js";
 import { getAllOrganizations } from "../model/organizations.js";
 import { body, validationResult } from "express-validator";
@@ -66,6 +67,52 @@ const processNewProjectForm = async (req, res) => {
   }
 };
 
+// week 04: New function to show the form for editing an existing project
+const showEditProjectForm = async (req, res, next) => {
+  const [project, organizations] = await Promise.all([
+    getProjectDetails(req.params.id),
+    getAllOrganizations(),
+  ]);
+
+  if (!project) {
+    const error = new Error("Service project not found");
+    error.status = 404;
+    return next(error);
+  }
+
+  res.render("edit-project", {
+    title: "Edit Project Information",
+    project,
+    organizations,
+  });
+};
+
+const processEditProjectForm = async (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    errors.array().forEach((error) => req.flash("error", error.msg));
+    return res.redirect(`/edit-project/${req.params.id}`);
+  }
+
+  const { title, description, location, date, organizationId } = req.body;
+  const updated = await updateProject(
+    req.params.id,
+    title,
+    description,
+    location,
+    date,
+    organizationId,
+  );
+
+  if (!updated) {
+    req.flash("error", "Service project not found");
+    return res.redirect("/projects");
+  }
+
+  req.flash("success", "Project information updated successfully!");
+  res.redirect(`/project/${req.params.id}`);
+};
+
 // week 04: Validation rules for the new project form
 const projectValidation = [
   body("title")
@@ -103,5 +150,7 @@ export {
   showProjectsPage,
   showNewProjectForm,
   processNewProjectForm,
+  showEditProjectForm,
+  processEditProjectForm,
   projectValidation,
 };
