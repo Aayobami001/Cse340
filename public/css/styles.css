@@ -132,6 +132,7 @@ main a {
 a:hover {
     color: var(--coral);
     background-color: rgb(211, 211, 181);
+    text-decoration: none;
 }
 
 a:focus-visible,
