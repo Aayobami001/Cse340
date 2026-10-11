@@ -26,7 +26,10 @@
       /><strong>UnityServe Volunteers</strong>: hello@unityserve.org
     </li> -->
   </ul>
-  <p><a href="/new-organization">Add a new organization</a></p>
+  <p><% if (user && user.role_name === 'admin') { %>
+    <a href="/new-organization">Add New Organization</a>
+<% } %>
+</p>
 </main>
 
 <%- include('partials/footer') %>

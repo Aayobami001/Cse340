@@ -1,0 +1,20 @@
+<%- include ('partials/header') %>
+<%- include ('partials/navigation') %>
+
+<main>
+    <h1><%= title %></h1>
+
+    <h2>Details</h2>
+    <% if (user) { %>
+        <% user.forEach(user => { %>
+            <p>Name: <%= user.name %></p>
+            <p>Email: <%= user.email %></p>
+            <p>Role: <%= user.role_name %></p>
+        <% }); %>
+    <% } else { %>
+        <p>You are viewing the dashboard as a guest. <a href="/login">Log in</a> to see your account details.</p>
+    <% } %>
+
+</main>
+
+<%- include('partials/footer') %>

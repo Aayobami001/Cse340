@@ -1,0 +1,23 @@
+<%- include('partials/header') %>
+<%- include('partials/navigation') %>
+
+<main>
+    <h1><%= title %></h1>
+
+    <h2>Dashboard</h2>
+    <% if (user) { %>
+        <p>Name: <%= user.name %></p>
+        <p>Username: <%= user.email %></p>
+    <% } else { %>
+        <p>You are viewing the dashboard as a guest. <a href="/login">Log in</a> to see your account details.</p>
+    <% } %>
+        
+    <p>
+        <% if (user && user.role_name === 'admin') { %>
+            <a href="/registered-users">View Registered Users</a>
+        <% } %>
+    </p>
+
+</main>
+
+<%- include('partials/footer') %>
