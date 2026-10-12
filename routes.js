@@ -42,35 +42,37 @@ import {
   processLoginForm,
   showDashboard,
   requireRole,
-  showRegisteredUsers
+  showRegisteredUsers,
+  requireLogin,
 } from "./controllers/users.js";
 
 
 const router = express.Router();
 
 router.get("/", showHomePage);
-router.get("/organizations", showOrganizationsPage);
-router.get("/projects", showProjectsPage);
-router.get("/project/:id", showProjectDetailsPage);
+router.get("/organizations", requireLogin, showOrganizationsPage);
+router.get("/projects", requireLogin, showProjectsPage);
+router.get("/project/:id", requireLogin, showProjectDetailsPage);
 router.get("/edit-project/:id", requireRole("admin"), showEditProjectForm);
-router.post("/edit-project/:id", projectValidation, processEditProjectForm);
+router.post("/edit-project/:id", requireRole("admin"), projectValidation, processEditProjectForm);
 
 // week 04: Routes for categories
-router.get("/categories", showCategoriesPage);
-router.get("/category/:id", showCategoryDetailsPage);
+router.get("/categories", requireLogin, showCategoriesPage);
+router.get("/category/:id", requireLogin, showCategoryDetailsPage);
 router.get("/new-category", requireRole("admin"), showNewCategoryForm);
-router.post("/new-category", categoryValidation, processNewCategoryForm);
+router.post("/new-category", requireRole("admin"), categoryValidation, processNewCategoryForm);
 router.get("/edit-category/:id", requireRole("admin"), showEditCategoryForm);
-router.post("/edit-category/:id", categoryValidation, processEditCategoryForm);
+router.post("/edit-category/:id", requireRole("admin"), categoryValidation, processEditCategoryForm);
 
 // Route for organization details page
-router.get("/organization/:id", showOrganizationDetailsPage);
+router.get("/organization/:id", requireLogin, showOrganizationDetailsPage);
 
 // Week 04: Route for new organization form
 router.get("/new-organization", requireRole("admin"), showNewOrganizationForm);
 // Route to handle new organization form submission
 router.post(
   "/new-organization",
+  requireRole("admin"),
   organizationValidation,
   processNewOrganizationForm,
 );
@@ -79,16 +81,17 @@ router.get("/test-error", showTestErrorPage);
 router.get("/edit-organization/:id", requireRole("admin"), showEditOrganizationForm);
 router.post(
   "/edit-organization/:id",
+  requireRole("admin"),
   organizationValidation,
   processEditOrganizationForm,
 );
 // Week 04: Route for new project form
 router.get("/new-project", requireRole("admin"), showNewProjectForm);
 // Route to handle new project form submission
-router.post("/new-project", projectValidation, processNewProjectForm);
+router.post("/new-project", requireRole("admin"), projectValidation, processNewProjectForm);
 // Week 04: Route for assigning categories to a project
 router.get("/assign-category/:id", requireRole("admin"), showAssignCategoryForm);
-router.post("/assign-category/:id", createAssignCategoryForm);
+router.post("/assign-category/:id", requireRole("admin"), createAssignCategoryForm);
 
 // Week 05: Routes for user registration and login
 router.get("/register", showUserRegisterForm);

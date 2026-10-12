@@ -41,10 +41,6 @@ app.use(session({
     cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
 }));
 
-app.use((req, res, next) => {
-  res.locals.user = req.session.user || null; // Make user info available to templates
-  next();
-});
 // Use flash message middleware
 app.use(flash);
 
