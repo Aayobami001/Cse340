@@ -40,6 +40,11 @@ app.use(session({
     saveUninitialized: true,
     cookie: { maxAge: 60 * 60 * 1000 } // Session expires after 1 hour of inactivity
 }));
+
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null; // Make user info available to templates
+  next();
+});
 // Use flash message middleware
 app.use(flash);
 
@@ -60,6 +65,7 @@ app.use((req, res, next) => {
     res.locals.isLoggedIn = true; // User is logged in
     res.locals.user = req.session.user; // Make user info available to templates
   }
+  
   res.locals.NODE_ENV = NODE_ENV;
   next();
 });
