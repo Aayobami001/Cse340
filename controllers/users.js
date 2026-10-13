@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { createUser, getRegisterUser } from "../model/users.js";
 import { authenticateUser } from "../model/users.js";
+import { getVolunteerProjects } from "../model/projects.js";
 
 const saltRounds = 10;
 const password = "user-password";
@@ -71,11 +72,15 @@ const requireLogin = (req, res, next) => {
 };
 
 // Week 05
-const showDashboard = (req, res) => {
+const showDashboard = async (req, res) => {
   const user = req.session?.user;
+  const volunteerProjects = user
+    ? await getVolunteerProjects(user.user_id)
+    : [];
   res.render("dashboard", {
     title: "Dashboard",
     user,
+    volunteerProjects,
   });
 };
 

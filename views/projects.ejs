@@ -3,10 +3,13 @@
 
 <main>
   <h1><%= title %></h1>
+  <p>Select a project to view its details and volunteer.</p>
     <ul>
        <% projects.forEach(project => { %>
             <li>
-              <a href="/project/<%= project.service_project_id %>"><%= project.title %></a>
+              <a href="/project/<%= project.service_project_id %>">
+                <%= project.title %><% if (user) { %> — View details and volunteer<% } %>
+              </a>
               <span>Organization:
                 <% if (project.organization_id) { %>
                   <a href="/organization/<%= project.organization_id %>"><%= project.organization_name %></a>

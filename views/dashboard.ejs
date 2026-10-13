@@ -18,6 +18,26 @@
         <% } %>
     </p>
 
+    <h3>Projects I Volunteer For</h3>
+    <% if (user) { %>
+        <% if (volunteerProjects.length > 0) { %>
+            <ul>
+                <% volunteerProjects.forEach(project => { %>
+                    <li>
+                        <a href="/project/<%= project.project_id %>"><%= project.title %></a>
+                        <form action="/dashboard/projects/<%= project.project_id %>/unvolunteer" method="POST">
+                            <button type="submit">Remove me as a volunteer</button>
+                        </form>
+                    </li>
+                <% }); %>
+            </ul>
+        <% } else { %>
+            <p>You have not signed up to volunteer for any projects yet.</p>
+        <% } %>
+    <% } else { %>
+        <p><a href="/login">Log in</a> to view your volunteer projects.</p>
+    <% } %>
+
 </main>
 
 <%- include('partials/footer') %>

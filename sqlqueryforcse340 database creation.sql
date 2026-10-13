@@ -26,6 +26,7 @@ CREATE TABLE service_project (
 	FOREIGN KEY (organization_id) REFERENCES organization(organization_id)
 );
 
+
 INSERT INTO service_project (title, description, location, date_begin)
 VALUES
 ('Not Known Yet', 're through sustainable construction projects.', 'Nigeria', '2/12/2026', 3)
@@ -59,3 +60,16 @@ VALUES
     (2, 2),
 	(3, 4),
 	(1, 4);
+
+
+CREATE TABLE service_project_volunteer (
+    service_project_id INT NOT NULL,
+    user_id INT NOT NULL,
+    PRIMARY KEY (service_project_id, user_id),
+    FOREIGN KEY (service_project_id)
+        REFERENCES service_project(service_project_id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (user_id)
+        REFERENCES users(user_id)
+        ON DELETE CASCADE
+);
