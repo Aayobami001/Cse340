@@ -61,7 +61,7 @@ VALUES
 	(3, 4),
 	(1, 4);
 
-
+-- Week 06 assignment
 CREATE TABLE service_project_volunteer (
     service_project_id INT NOT NULL,
     user_id INT NOT NULL,

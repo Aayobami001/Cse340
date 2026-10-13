@@ -55,8 +55,10 @@ router.get("/", showHomePage);
 router.get("/organizations", requireLogin, showOrganizationsPage);
 router.get("/projects", requireLogin, showProjectsPage);
 router.get("/project/:id", showProjectDetailsPage);
+// week 06 Assignment
 router.post("/project/:id/volunteer", requireLogin, volunteerForProject);
 router.post("/project/:id/unvolunteer", requireLogin, removeProjectVolunteerSignup);
+// 
 router.get("/edit-project/:id", requireRole("admin"), showEditProjectForm);
 router.post("/edit-project/:id", requireRole("admin"), projectValidation, processEditProjectForm);
 
@@ -110,6 +112,6 @@ router.get("/logout", (req, res) => {
 });
 // Week 05 Team Activity
 router.get("/dashboard", showDashboard); // Dashboard is available to guests and logged-in users
-router.post("/dashboard/projects/:id/unvolunteer", requireLogin, removeProjectVolunteerSignup);
+router.post("/dashboard/projects/:id/unvolunteer", requireLogin, removeProjectVolunteerSignup); // week 6
 router.get("/registered-users", requireRole("admin"), showRegisteredUsers); // Only admin can access registered users
 export default router;

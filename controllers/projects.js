@@ -3,6 +3,7 @@ import {
   getAllProjects,
   createProject,
   updateProject,
+  // Week 06 assignment 
   addProjectVolunteer,
   removeProjectVolunteer,
   isProjectVolunteer,
@@ -31,35 +32,6 @@ const showProjectDetailsPage = async (req, res, next) => {
     ? await isProjectVolunteer(project.project_id, user.user_id)
     : false;
   res.render("project", { title, project, user, isVolunteer });
-};
-
-const volunteerForProject = async (req, res, next) => {
-  const project = await getProjectDetails(req.params.id);
-  if (!project) {
-    const error = new Error("Service project not found");
-    error.status = 404;
-    return next(error);
-  }
-
-  await addProjectVolunteer(project.project_id, req.session.user.user_id);
-  req.flash("success", "You are now volunteering for this project.");
-  res.redirect(`/project/${project.project_id}`);
-};
-
-const removeProjectVolunteerSignup = async (req, res, next) => {
-  const project = await getProjectDetails(req.params.id);
-  if (!project) {
-    const error = new Error("Service project not found");
-    error.status = 404;
-    return next(error);
-  }
-
-  await removeProjectVolunteer(project.project_id, req.session.user.user_id);
-  req.flash("success", "You are no longer volunteering for this project.");
-  const redirectPath = req.path.startsWith("/dashboard")
-    ? "/dashboard"
-    : `/project/${project.project_id}`;
-  res.redirect(redirectPath);
 };
 
 // week 04: New function to show the form for creating a new project
@@ -180,6 +152,36 @@ const projectValidation = [
     .isInt()
     .withMessage("Organization must be a valid integer"),
 ];
+
+// Week 06 assignment: added controllers for the volunteers
+const volunteerForProject = async (req, res, next) => {
+  const project = await getProjectDetails(req.params.id);
+  if (!project) {
+    const error = new Error("Service project not found");
+    error.status = 404;
+    return next(error);
+  }
+
+  await addProjectVolunteer(project.project_id, req.session.user.user_id);
+  req.flash("success", "You are now volunteering for this project.");
+  res.redirect(`/project/${project.project_id}`);
+};
+// week 06
+const removeProjectVolunteerSignup = async (req, res, next) => {
+  const project = await getProjectDetails(req.params.id);
+  if (!project) {
+    const error = new Error("Service project not found");
+    error.status = 404;
+    return next(error);
+  }
+
+  await removeProjectVolunteer(project.project_id, req.session.user.user_id);
+  req.flash("success", "You are no longer volunteering for this project.");
+  const redirectPath = req.path.startsWith("/dashboard")
+    ? "/dashboard"
+    : `/project/${project.project_id}`;
+  res.redirect(redirectPath);
+};
 
 export {
   showProjectDetailsPage,

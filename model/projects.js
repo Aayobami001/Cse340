@@ -143,6 +143,7 @@ const updateProject = async (projectId, title, description, location, dateBegin,
   return result.rows.length > 0;
 };
 
+// Week 06 Assignment: Add model to retrieve data from the data base
 const addProjectVolunteer = async (projectId, userId) => {
   await db.query(
     `
@@ -153,7 +154,7 @@ const addProjectVolunteer = async (projectId, userId) => {
     [projectId, userId],
   );
 };
-
+// week 06
 const removeProjectVolunteer = async (projectId, userId) => {
   await db.query(
     `
@@ -163,7 +164,7 @@ const removeProjectVolunteer = async (projectId, userId) => {
     [projectId, userId],
   );
 };
-
+// week 06
 const getVolunteerProjects = async (userId) => {
   const result = await db.query(
     `
@@ -185,7 +186,7 @@ const getVolunteerProjects = async (userId) => {
 
   return result.rows;
 };
-
+// week 06
 const isProjectVolunteer = async (projectId, userId) => {
   const result = await db.query(
     `
